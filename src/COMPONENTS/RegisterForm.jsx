@@ -36,7 +36,7 @@ const RegisterForm = ({ mobile }) => {
 
       const response = await api.post('/register', formData)
 
-      console.log(response.data)
+      console.log("register",response.data)
 
       if (response.data?.token) {
         login(response.data.user, response.data.token)
@@ -112,7 +112,7 @@ const RegisterForm = ({ mobile }) => {
             </label>
 
             <input
-              type='text'
+              type='number'
               value={mobile}
               readOnly
               className='w-full border border-gray-300 rounded-lg p-3 bg-gray-100'
