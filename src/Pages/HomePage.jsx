@@ -19,7 +19,8 @@ const HomePage = () => {
     enabled: !!user?.id
   })
 
-  console.log("seller profile data ====", data)
+  // ✅ correct path
+  const seller = data?.result?.response
 
   const handleLogout = () => {
     logout()
@@ -50,7 +51,7 @@ const HomePage = () => {
         <div className='bg-white shadow-lg rounded-xl p-5 flex justify-between items-center'>
           <div>
             <h1 className='text-3xl font-bold text-blue-600'>Seller Dashboard</h1>
-            <p className='text-gray-500 mt-1'>Welcome, {user?.name}</p>
+            <p className='text-gray-500 mt-1'>Welcome, {seller?.name}</p>
           </div>
           <button
             onClick={handleLogout}
@@ -63,13 +64,22 @@ const HomePage = () => {
         {/* Profile Card */}
         <div className='bg-white shadow-lg rounded-xl p-6 mt-6 text-center'>
           <img
-            src={user?.profile_image || 'https://placehold.co/150x150'}
+            src={
+              seller?.profile_img
+                ? `https://d32neyt9p9wyaf.cloudfront.net/storage/${seller.profile_img}`
+                : 'https://placehold.co/150x150'
+            }
             alt='profile'
             className='w-32 h-32 rounded-full mx-auto object-cover border-4 border-blue-500'
           />
-          <h2 className='text-2xl font-bold mt-4'>{user?.name}</h2>
-          <p className='text-gray-500'>{user?.email}</p>
-          <p className='text-gray-500'>{user?.mobile}</p>
+          <h2 className='text-2xl font-bold mt-4'>{seller?.name}</h2>
+          <p className='text-gray-500'>{seller?.email}</p>
+          <p className='text-gray-500'>{seller?.mobile}</p>
+          <div className='mt-4'>
+            <span className='bg-green-100 text-green-700 px-4 py-1 rounded-full text-sm'>
+              {seller?.status === '1' ? 'Active Seller' : 'Inactive'}
+            </span>
+          </div>
         </div>
 
         {/* Seller Info */}
@@ -78,29 +88,53 @@ const HomePage = () => {
           <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
             <div>
               <p className='text-gray-500'>Company Name</p>
-              <h3 className='font-semibold text-lg'>{user?.company_name || 'N/A'}</h3>
+              <h3 className='font-semibold text-lg'>{seller?.company_name || 'N/A'}</h3>
             </div>
             <div>
               <p className='text-gray-500'>GST Number</p>
-              <h3 className='font-semibold text-lg'>{user?.gst_no || 'N/A'}</h3>
+              <h3 className='font-semibold text-lg'>{seller?.gst_no || 'N/A'}</h3>
             </div>
             <div>
               <p className='text-gray-500'>PAN Number</p>
-              <h3 className='font-semibold text-lg'>{user?.pan_no || 'N/A'}</h3>
+              <h3 className='font-semibold text-lg'>{seller?.pan_no || 'N/A'}</h3>
             </div>
             <div>
               <p className='text-gray-500'>Location ID</p>
-              <h3 className='font-semibold text-lg'>{user?.location_id || 'N/A'}</h3>
+              <h3 className='font-semibold text-lg'>{seller?.location_id || 'N/A'}</h3>
+            </div>
+            <div>
+              <p className='text-gray-500'>Address</p>
+              <h3 className='font-semibold text-lg'>{seller?.address || 'N/A'}</h3>
+            </div>
+            <div>
+              <p className='text-gray-500'>State</p>
+              <h3 className='font-semibold text-lg'>{seller?.state_name || 'N/A'}</h3>
+            </div>
+            <div>
+              <p className='text-gray-500'>District</p>
+              <h3 className='font-semibold text-lg'>{seller?.district_name || 'N/A'}</h3>
+            </div>
+            <div>
+              <p className='text-gray-500'>Zipcode</p>
+              <h3 className='font-semibold text-lg'>{seller?.zipcode || 'N/A'}</h3>
+            </div>
+            <div>
+              <p className='text-gray-500'>Login Via</p>
+              <h3 className='font-semibold text-lg'>{seller?.login_via || 'N/A'}</h3>
+            </div>
+            <div>
+              <p className='text-gray-500'>Total Posts</p>
+              <h3 className='font-semibold text-lg'>{seller?.user_post_count ?? 0}</h3>
             </div>
           </div>
         </div>
 
-        {/* Products */}
+        {/* Related Data / Products */}
         <div className='bg-white shadow-lg rounded-xl p-6 mt-6'>
           <h2 className='text-2xl font-bold text-gray-700 mb-6'>Seller Products</h2>
           <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-            {data?.products?.length > 0 ? (
-              data.products.map((product) => (
+            {seller?.related_data?.length > 0 ? (
+              seller.related_data.map((product) => (
                 <div
                   key={product.id}
                   className='border rounded-lg overflow-hidden hover:shadow-xl transition duration-300'
@@ -123,14 +157,6 @@ const HomePage = () => {
               <p className='text-gray-500'>No Products Available</p>
             )}
           </div>
-        </div>
-
-        {/* Raw API Response */}
-        <div className='bg-white shadow-lg rounded-xl p-6 mt-6'>
-          <h2 className='text-2xl font-bold text-gray-700 mb-4'>API Response</h2>
-          <pre className='bg-gray-100 p-4 rounded-lg text-sm overflow-auto'>
-            {JSON.stringify(data, null, 2)}
-          </pre>
         </div>
 
       </div>
